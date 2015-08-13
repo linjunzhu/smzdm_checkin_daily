@@ -36,21 +36,44 @@ python smzdm.py
 
 #每天自动执行
 1、 确保你使用 Linux or Mac OSX 系统
-2、
+
+2、打开`smzdm_execute.sh`
+```shell
+#! /bin/bash
+
+. /etc/profile
+
+# 修改这里的路径为实际项目路径！！！
+app_path="/home/deployer/smzdm_checkin_daily"
+
+cd $app_path
+
+case "$1" in
+  start)
+      /usr/bin/python $app_path/smzdm.py start &
+     ;;
+  *)
+        echo $"Usage: $0 {start}"
+        exit 1
+esac
+
+exit 1
+
+```
+3、
 ```shell
 # 开始编辑自动执行脚本
 crontab -e
 ```
 ```shell
-
 # 在文件末尾添加（路径根据实际情况修改)
 # 每天早上7点将进行签到
-0 7 * * * python /home/deployer/smzdm_checkin_daily/smzdm.py
+0 7 * * * /bin/sh /home/deployer/smzdm_checkin_daily/smzdm_execute.sh start
 ```
 ```shell
 # 查看自动执行脚本
 cdeployer@Xshare:~$ crontab -l
-0 7 * * * python /home/deployer/smzdm_checkin_daily/smzdm.py
+0 7 * * * /bin/sh /home/deployer/smzdm_checkin_daily/smzdm_execute.sh start
 ```
 
 
