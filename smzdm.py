@@ -42,6 +42,13 @@ class Smzdm:
         request = urllib2.Request(url, headers = self.headers)
         self.opener.open(request)
 
+    # 查看是否登录
+    def is_login(self):
+        url = "http://www.smzdm.com/user/info/jsonp_get_current?callback=jQuery111009196728009264916_1439523200100&pid=&type=&_=1439523200101"
+        request = urllib2.Request(url, headers = self.headers)
+        response = self.opener.open(request)
+        content = response.read()
+        return content
 
     def start_checkin(self):
         parser = ConfigParser.RawConfigParser()
@@ -50,9 +57,9 @@ class Smzdm:
             account = {}
             account['username'] = parser.get(user, 'username')
             account['password'] = parser.get(user, 'password')
-            smzdm.login(account)
-            smzdm.checkin()
-            smzdm.logout()
+            self.login(account)
+            self.checkin()
+            self.logout()
 
 smzdm = Smzdm()
 smzdm.start_checkin()
