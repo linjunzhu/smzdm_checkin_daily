@@ -30,6 +30,12 @@ class Smzdm:
         request = urllib2.Request(url, headers = self.headers)
         self.opener.open(request)
 
+    # 退出
+    def logout(self):
+        url = "http://www.smzdm.com/user/logout"
+        request = urllib2.Request(url, headers = self.headers)
+        self.opener.open(request)
+
     # 签到
     def checkin(self):
         url = "http://www.smzdm.com//user/qiandao/jsonp_checkin"
@@ -46,6 +52,7 @@ class Smzdm:
             account['password'] = parser.get(user, 'password')
             smzdm.login(account)
             smzdm.checkin()
+            smzdm.logout()
 
 smzdm = Smzdm()
 smzdm.start_checkin()
