@@ -28,7 +28,8 @@ class Smzdm:
         is_pop = 1
         url = "http://www.smzdm.com/user/login/jsonp_check?callback=jQuery111004638147682417184_1439357637485&user_login=%s&user_pass=%s&rememberme=%s&is_pop=%s&captcha=&_=1439357637487" % (user_login, user_pass, rememberme, is_pop)
         request = urllib2.Request(url, headers = self.headers)
-        self.opener.open(request)
+        content = self.opener.open(request)
+        return content
 
     # 退出
     def logout(self):
@@ -42,13 +43,18 @@ class Smzdm:
         request = urllib2.Request(url, headers = self.headers)
         self.opener.open(request)
 
-    # 查看是否登录
-    def is_login(self):
-        url = "http://www.smzdm.com/user/info/jsonp_get_current?callback=jQuery111009196728009264916_1439523200100&pid=&type=&_=1439523200101"
+    # 查看是否签到
+    def is_checkin(self):
+        url = "http://www.smzdm.com/user/info/jsonp_get_current?"
         request = urllib2.Request(url, headers = self.headers)
         response = self.opener.open(request)
         content = response.read()
-        return content
+        pattern = re.compile('\"has_checkin\"\:(.*?),')
+        item = re.search(pattern, content)
+        if item and item.group(1).strip() == 'true':
+            print(u'签到成功！')
+        else:
+            print(u'签到失败！')
 
     def start_checkin(self):
         parser = ConfigParser.RawConfigParser()
@@ -59,6 +65,7 @@ class Smzdm:
             account['password'] = parser.get(user, 'password')
             self.login(account)
             self.checkin()
+            self.is_checkin()
             self.logout()
 
 smzdm = Smzdm()
