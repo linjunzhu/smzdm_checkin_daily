@@ -22,30 +22,32 @@ class Smzdm:
 
     # 登录
     def login(self, account):
-        user_login = account['username']
-        user_pass = account['password']
-        rememberme = 1
-        is_pop = 1
-        url = "http://www.smzdm.com/user/login/jsonp_check?callback=jQuery111004638147682417184_1439357637485&user_login=%s&user_pass=%s&rememberme=%s&is_pop=%s&captcha=&_=1439357637487" % (user_login, user_pass, rememberme, is_pop)
-        request = urllib2.Request(url, headers = self.headers)
+        url = "https://zhiyou.smzdm.com/user/login/ajax_check"
+        data = urllib.urlencode({
+            'username' : account['username'],
+            'password' : account['password'],
+            'rememberme' : 'on',
+            'redirect_url' : 'http://www.smzdm.com'
+        })
+        request = urllib2.Request(url, headers = self.headers, data = data)
         content = self.opener.open(request)
         return content
 
     # 退出
     def logout(self):
-        url = "http://www.smzdm.com/user/logout"
+        url = "http://zhiyou.smzdm.com/user/logout"
         request = urllib2.Request(url, headers = self.headers)
         self.opener.open(request)
 
     # 签到
     def checkin(self):
-        url = "http://www.smzdm.com//user/qiandao/jsonp_checkin"
+        url = "http://zhiyou.smzdm.com/user/checkin/jsonp_checkin"
         request = urllib2.Request(url, headers = self.headers)
         self.opener.open(request)
 
     # 查看是否签到
     def is_checkin(self):
-        url = "http://www.smzdm.com/user/info/jsonp_get_current?"
+        url = "http://zhiyou.smzdm.com/user/info/jsonp_get_current?"
         request = urllib2.Request(url, headers = self.headers)
         response = self.opener.open(request)
         content = response.read()
