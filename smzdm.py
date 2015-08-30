@@ -54,9 +54,9 @@ class Smzdm:
         pattern = re.compile('\"has_checkin\"\:(.*?),')
         item = re.search(pattern, content)
         if item and item.group(1).strip() == 'true':
-            print(u'签到成功！')
+            os.system(' var=`date "+%Y-%m-%d %H:%M:%S"`;echo "SUCCEED ${var}" >> log')
         else:
-            print(u'签到失败！')
+            os.system(' var=`date "+%Y-%m-%d %H:%M:%S"`;echo "FAILED ${var}" >> log')
 
     def start_checkin(self):
         parser = ConfigParser.RawConfigParser()
