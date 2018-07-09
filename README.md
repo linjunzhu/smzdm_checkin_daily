@@ -67,8 +67,8 @@ crontab -e
 ```
 ```shell
 # 在文件末尾添加（路径根据实际情况修改)
-# 每天早上7点将进行签到
-0 7 * * * /bin/sh /home/deployer/smzdm_checkin_daily/smzdm_execute.sh start
+# 每天早上7点~8点将进行签到 ( 防止什么值得买 block ip)
+0 7 * * *  sleep $((RANDOM*7200/32768)) && /bin/sh /home/deployer/smzdm_checkin_daily/smzdm_execute.sh start
 ```
 ```shell
 # 查看自动执行脚本
